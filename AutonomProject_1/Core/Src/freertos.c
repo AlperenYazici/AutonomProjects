@@ -62,11 +62,16 @@ const osThreadAttr_t taskUartEcho_attributes = {
   .priority = (osPriority_t) osPriorityLow,
   .stack_size = 128 * 1
 };
-/* Definitions for eventUartCom */
 osEventFlagsId_t eventUartComHandle;
 const osEventFlagsAttr_t eventUartCom_attributes = {
   .name = "eventUartCom"
+	
 };
+/* Definitions for eventUartCom */
+//osEventFlagsId_t eventUartComHandle;
+//const osEventFlagsAttr_t eventUartCom_attributes = {
+//  .name = "eventUartCom"
+//};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -125,7 +130,10 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-
+inline void uartEventWait()
+{
+		osEventFlagsWait(eventUartComHandle,1,osFlagsWaitAll,portMAX_DELAY);
+}
 
 
 

@@ -45,9 +45,9 @@ class UartCom
 	IRtos* IRealTimeOS;
 	ILedManager* ILed_Manager;
 	uint8_t *uart_data_buff;
-	uart_com_msg uart_app_msg = {0,0};
+	uart_com_msg uart_app_msg; //= {0,0};
 	uart_com_cmd_type uart_app_cmd_type;
-	Echo_State is_running_echo = ECHO_ACTIVE;// = 0;
+	Echo_State is_running_echo;// = ECHO_ACTIVE;// = 0;
 	
 	
 	UartCom( IBsp* IBoardSP, IRtos* IRealTimeOS	,uint8_t *uart_data_buff , ILedManager* ILed_Manager);
@@ -66,6 +66,7 @@ class UartCom
 	
 	void Uart_Com_Echo();
 	
+	void UartCom_Update_Configuration();
 };
 
 #endif

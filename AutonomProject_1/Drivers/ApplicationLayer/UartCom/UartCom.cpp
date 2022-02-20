@@ -28,12 +28,20 @@ Error_Ctrl_Result IS_ALL_DIGIT_NMBR(char* string_val , uint8_t digit_cnt)
 	
 }
 
+void UartCom::UartCom_Update_Configuration()
+{
+	
+}
+
 UartCom::UartCom(IBsp* IBoardSP,  IRtos* IRealTimeOS	,uint8_t *uart_data_buff , ILedManager* ILed_Manager)
 {
 	this->uart_data_buff = uart_data_buff;
 	this->IBoardSP = IBoardSP;
 	this->IRealTimeOS = IRealTimeOS;
 	this->ILed_Manager = ILed_Manager;
+	uart_app_msg.len = 0;
+	is_running_echo = ECHO_ACTIVE;
+	
 }
 
 void UartCom::Uart_Com_ISR_Process()
@@ -65,6 +73,7 @@ void UartCom::Uart_Com_ISR_Process()
 		index++;
 	}
 }
+
 void UartCom::UART_Com_Start_Cmd_Handle()
 {
 	is_running_echo = ECHO_ACTIVE;
@@ -111,6 +120,8 @@ uart_com_cmd_valid UartCom::UART_Com_LedOff_Cmd_Handle()
 	
 	led_off_ms_buff = string_to_ui32(string_buff , digit_cnt);
 	ILed_Manager->SetGreenLedOffTime(led_off_ms_buff);
+	
+	return MSG_VALID;
 }
 
 void UartCom::Uart_Com_Echo()

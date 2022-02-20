@@ -91,10 +91,8 @@ void UartEchoTask(void *argument)
   /* USER CODE BEGIN UartEchoTask */
   /* Infinite loop */
   for(;;)
-  {
-		osEventFlagsWait(eventUartComHandle,1,osFlagsWaitAll,portMAX_DELAY);	
+  {	
     Uart_Com.Uart_Com_Echo();
-		osDelay(1);
   }
   /* USER CODE END UartEchoTask */
 }
@@ -106,7 +104,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	Uart_Com.Uart_Com_ISR_Process();
 	
-		HAL_UART_Receive_IT(&huart2,uart_msg,1);
+	HAL_UART_Receive_IT(&huart2,uart_msg,1);
 
 }
 

@@ -7,7 +7,6 @@ extern UART_HandleTypeDef huart2;
 
 class BspLayer: public IBsp
 {
-	uint8_t ben_varim = 2;
 	virtual void LedGreen_On() ;
 	virtual void LedGreen_Off() ;
 	virtual void Uart_Tx(uint8_t *data , uint16_t len , uint32_t time_out);
