@@ -18,7 +18,7 @@ class ILedManager
 {		
 	public:
 		
-	OnOffTimes GreenLed;// = {500 , 500};
+	OnOffTimes GreenLed	= {500 , 500};
 
 
 	virtual void SetGreenLedOnTime(uint32_t time_ms) = 0;

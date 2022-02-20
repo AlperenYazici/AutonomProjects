@@ -29,7 +29,10 @@ typedef enum uart_com_cmd_type{
 	START,
 	STOP,
 	SET_LED_ON_MS,
-	SET_LED_OFF_MS
+	SET_LED_OFF_MS,
+	SET_UART_BAUD,
+	SET_UART_WORDLENGHT,
+	SET_UART_STOP_BIT
 }uart_com_cmd_type;
 
 typedef enum uart_com_cmd_valid{
@@ -38,21 +41,32 @@ typedef enum uart_com_cmd_valid{
 }uart_com_cmd_valid;
 
 
+
 class UartCom
 {
 	public:
 	IBsp* IBoardSP;
 	IRtos* IRealTimeOS;
 	ILedManager* ILed_Manager;
-	uint8_t *uart_data_buff;
-	uart_com_msg uart_app_msg; //= {0,0};
+	
+	uint8_t uart_data_buff[2];
+	uart_com_msg uart_app_msg	= {0,0};
 	uart_com_cmd_type uart_app_cmd_type;
-	Echo_State is_running_echo;// = ECHO_ACTIVE;// = 0;
+	Echo_State is_running_echo = ECHO_ACTIVE;// = 0;
+	uint8_t uart_rx_isr_active = 1;
+	const uint8_t string_restart[15] = "RESTARTING...\n" ;
+	const uint8_t cnt_restart_string = 14;
 	
+	const uint8_t string_restarted[12] = "RESTARTED!\n" ;
+	const uint8_t cnt_restarted_string = 11;
 	
-	UartCom( IBsp* IBoardSP, IRtos* IRealTimeOS	,uint8_t *uart_data_buff , ILedManager* ILed_Manager);
+	UartCom( IBsp* IBoardSP, IRtos* IRealTimeOS	, ILedManager* ILed_Manager);
 
+	void Start();
+	
 	void Uart_Com_ISR_Process();
+	
+	void Uart_Config_Task();
 	
 	void UART_Com_Start_Cmd_Handle();
 
@@ -67,6 +81,13 @@ class UartCom
 	void Uart_Com_Echo();
 	
 	void UartCom_Update_Configuration();
+
+	uart_com_cmd_valid UART_Com_Set_BaudRate_Cmd_Handle();
+
+	uart_com_cmd_valid UART_Com_Set_WordLen_Cmd_Handle();
+
+	uart_com_cmd_valid UART_Com_Set_StopBit_Cmd_Handle();
+
 };
 
 #endif

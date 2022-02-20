@@ -32,6 +32,7 @@ extern "C" {
 void MX_FREERTOS_Init(void);
 	void LedTask(void *argument);
 void UartEchoTask(void *argument);
+ void UartConfigTask(void *argument);
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 

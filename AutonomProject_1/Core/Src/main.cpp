@@ -48,7 +48,7 @@
 BspLayer Bsp_Stm;
 RtosLayer Rtos_FreeRtos;
 LedManager Led_Manager(&Bsp_Stm , &Rtos_FreeRtos);
-UartCom Uart_Com(&Bsp_Stm , &Rtos_FreeRtos,uart_msg,&Led_Manager);
+UartCom Uart_Com(&Bsp_Stm , &Rtos_FreeRtos,&Led_Manager);
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -78,7 +78,7 @@ void LedTask(void *argument)
   }
   /* USER CODE END LedTask */
 }
-extern osEventFlagsId_t eventUartComHandle;
+
 /* USER CODE BEGIN Header_UartEchoTask */
 /**
 * @brief Function implementing the taskUartEcho thread.
@@ -96,6 +96,8 @@ void UartEchoTask(void *argument)
   }
   /* USER CODE END UartEchoTask */
 }
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -103,9 +105,6 @@ void UartEchoTask(void *argument)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	Uart_Com.Uart_Com_ISR_Process();
-	
-	HAL_UART_Receive_IT(&huart2,uart_msg,1);
-
 }
 
 /* USER CODE END 0 */
@@ -144,9 +143,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-	HAL_UART_Receive_IT(&huart2,uart_msg,1);
-  /* USER CODE BEGIN 2 */
 
+  /* USER CODE BEGIN 2 */
+	Uart_Com.Start();
   /* USER CODE END 2 */
 
   /* Init scheduler */

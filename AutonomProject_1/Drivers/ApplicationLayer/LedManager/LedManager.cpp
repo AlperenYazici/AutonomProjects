@@ -4,8 +4,7 @@ LedManager::LedManager(IBsp* IBoardSP ,IRtos* IRealTimeOS  )
 {
 	this->IBoardSP = IBoardSP;
 	this->IRealTimeOS = IRealTimeOS;
-	GreenLed.Off_Time = 500;
-	GreenLed.On_Time = 500;
+
 }
 
 void LedManager::Task()

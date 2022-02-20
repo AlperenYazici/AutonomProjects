@@ -62,16 +62,20 @@ const osThreadAttr_t taskUartEcho_attributes = {
   .priority = (osPriority_t) osPriorityLow,
   .stack_size = 128 * 1
 };
+osThreadId_t taskUartConfigHandle;
+const osThreadAttr_t taskUartConfig_attributes = {
+  .name = "taskUartConfig",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 1
+};
+
 osEventFlagsId_t eventUartComHandle;
 const osEventFlagsAttr_t eventUartCom_attributes = {
   .name = "eventUartCom"
 	
 };
-/* Definitions for eventUartCom */
-//osEventFlagsId_t eventUartComHandle;
-//const osEventFlagsAttr_t eventUartCom_attributes = {
-//  .name = "eventUartCom"
-//};
+
+
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -80,6 +84,7 @@ const osEventFlagsAttr_t eventUartCom_attributes = {
 
 extern void LedTask(void *argument);
 extern void UartEchoTask(void *argument);
+
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -116,6 +121,7 @@ void MX_FREERTOS_Init(void) {
   /* creation of taskUartEcho */
   taskUartEchoHandle = osThreadNew(UartEchoTask, NULL, &taskUartEcho_attributes);
 
+//	taskUartConfigHandle = osThreadNew(UartConfigTask, NULL, &taskUartConfig_attributes);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -123,7 +129,6 @@ void MX_FREERTOS_Init(void) {
   /* Create the event(s) */
   /* creation of eventUartCom */
   eventUartComHandle = osEventFlagsNew(&eventUartCom_attributes);
-
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */

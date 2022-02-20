@@ -12,7 +12,7 @@ class RtosLayer : public IRtos
 public:
 	virtual void UartComEventFlagSet();
 	virtual void UartComEventFlagWait();
-	
+
 	virtual void TaskSleepMs(uint32_t time_ms);
 	
 };
