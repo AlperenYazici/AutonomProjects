@@ -41,3 +41,5 @@ autonomproject_1\freertos.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_t
 autonomproject_1\freertos.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim_ex.h
 autonomproject_1\freertos.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h
 autonomproject_1\freertos.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h
+autonomproject_1\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+autonomproject_1\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h

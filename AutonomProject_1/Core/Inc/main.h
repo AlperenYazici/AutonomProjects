@@ -29,7 +29,9 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f3xx_hal.h"
-
+void MX_FREERTOS_Init(void);
+	void LedTask(void *argument);
+void UartEchoTask(void *argument);
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 

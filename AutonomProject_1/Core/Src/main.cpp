@@ -20,10 +20,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "UartCom.h"
+#include "LedManager.h"
+#include "BspLayer.h"
+#include "RtosLayer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,44 +46,59 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-UART_HandleTypeDef huart2;
 
-/* Definitions for taskLed */
-osThreadId_t taskLedHandle;
-const osThreadAttr_t taskLed_attributes = {
-  .name = "taskLed",
-  .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 128 * 4
-};
-/* Definitions for taskUartEcho */
-osThreadId_t taskUartEchoHandle;
-const osThreadAttr_t taskUartEcho_attributes = {
-  .name = "taskUartEcho",
-  .priority = (osPriority_t) osPriorityLow,
-  .stack_size = 128 * 4
-};
-/* Definitions for eventUartCom */
-osEventFlagsId_t eventUartComHandle;
-const osEventFlagsAttr_t eventUartCom_attributes = {
-  .name = "eventUartCom"
-};
 /* USER CODE BEGIN PV */
-
+uint8_t uart_msg[2];
+BspLayer *Bsp_Stm;
+RtosLayer *Rtos_FreeRtos;
+LedManager Led_Manager(Bsp_Stm , Rtos_FreeRtos);
+UartCom Uart_Com(Bsp_Stm , Rtos_FreeRtos,uart_msg);
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
-void LedTask(void *argument);
-void UartEchoTask(void *argument);
 
 /* USER CODE BEGIN PFP */
+/* USER CODE BEGIN Header_LedTask */
+/**
+  * @brief  Function implementing the taskLed thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_LedTask */
+void LedTask(void *argument)
+{
+  /* USER CODE BEGIN LedTask */
+  /* Infinite loop */
+  for(;;)
+  {
+		Led_Manager.Task();
+  }
+  /* USER CODE END LedTask */
+}
 
+/* USER CODE BEGIN Header_UartEchoTask */
+/**
+* @brief Function implementing the taskUartEcho thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_UartEchoTask */
+void UartEchoTask(void *argument)
+{
+  /* USER CODE BEGIN UartEchoTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    Uart_Com.Uart_Com_Echo();
+  }
+  /* USER CODE END UartEchoTask */
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 
 /* USER CODE END 0 */
 
@@ -98,7 +118,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+	
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -116,43 +136,8 @@ int main(void)
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  osKernelInitialize();
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
-
-  /* Create the thread(s) */
-  /* creation of taskLed */
-  taskLedHandle = osThreadNew(LedTask, NULL, &taskLed_attributes);
-
-  /* creation of taskUartEcho */
-  taskUartEchoHandle = osThreadNew(UartEchoTask, NULL, &taskUartEcho_attributes);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* Create the event(s) */
-  /* creation of eventUartCom */
-  eventUartComHandle = osEventFlagsNew(&eventUartCom_attributes);
-
-  /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
-  /* USER CODE END RTOS_EVENTS */
-
+  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
+  MX_FREERTOS_Init();
   /* Start scheduler */
   osKernelStart();
 
@@ -205,107 +190,9 @@ void SystemClock_Config(void)
   }
 }
 
-/**
-  * @brief USART2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART2_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
-
-}
-
-/**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOF_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
-
-}
-
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
-
-/* USER CODE BEGIN Header_LedTask */
-/**
-  * @brief  Function implementing the taskLed thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_LedTask */
-void LedTask(void *argument)
-{
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_UartEchoTask */
-/**
-* @brief Function implementing the taskUartEcho thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_UartEchoTask */
-void UartEchoTask(void *argument)
-{
-  /* USER CODE BEGIN UartEchoTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END UartEchoTask */
-}
 
  /**
   * @brief  Period elapsed callback in non blocking mode

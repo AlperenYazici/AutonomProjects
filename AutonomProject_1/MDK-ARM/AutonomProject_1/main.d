@@ -1,4 +1,4 @@
-autonomproject_1\main.o: ../Core/Src/main.c
+autonomproject_1\main.o: ..\Core\Src\main.cpp
 autonomproject_1\main.o: ../Core/Inc/main.h
 autonomproject_1\main.o: ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal.h
 autonomproject_1\main.o: ../Core/Inc/stm32f3xx_hal_conf.h
@@ -41,3 +41,12 @@ autonomproject_1\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/port
 autonomproject_1\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
 autonomproject_1\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 autonomproject_1\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+autonomproject_1\main.o: ../Core/Inc/usart.h
+autonomproject_1\main.o: ../Core/Inc/gpio.h
+autonomproject_1\main.o: ..\Drivers\ApplicationLayer\UartCom\UartCom.h
+autonomproject_1\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+autonomproject_1\main.o: ..\Drivers\ApplicationLayer\IRtos\IRtos.h
+autonomproject_1\main.o: ..\Drivers\ApplicationLayer\IBsp\IBsp.h
+autonomproject_1\main.o: ..\Drivers\ApplicationLayer\LedManager\LedManager.h
+autonomproject_1\main.o: ..\Drivers\BspLayer\BspLayer.h
+autonomproject_1\main.o: ..\Drivers\RtosLayer\RtosLayer.h
