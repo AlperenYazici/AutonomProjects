@@ -2,3 +2,13 @@ autonomproject_1\rtoslayer.o: ..\Drivers\RtosLayer\RtosLayer.cpp
 autonomproject_1\rtoslayer.o: ..\Drivers\RtosLayer\RtosLayer.h
 autonomproject_1\rtoslayer.o: ..\Drivers\ApplicationLayer\IRtos\IRtos.h
 autonomproject_1\rtoslayer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+autonomproject_1\rtoslayer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+autonomproject_1\rtoslayer.o: ../Core/Inc/FreeRTOSConfig.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+autonomproject_1\rtoslayer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h

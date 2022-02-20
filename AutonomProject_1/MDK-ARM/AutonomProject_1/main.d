@@ -44,9 +44,11 @@ autonomproject_1\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_
 autonomproject_1\main.o: ../Core/Inc/usart.h
 autonomproject_1\main.o: ../Core/Inc/gpio.h
 autonomproject_1\main.o: ..\Drivers\ApplicationLayer\UartCom\UartCom.h
+autonomproject_1\main.o: ..\Drivers\ApplicationLayer\UartCom\UartCom_Conf.h
 autonomproject_1\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 autonomproject_1\main.o: ..\Drivers\ApplicationLayer\IRtos\IRtos.h
 autonomproject_1\main.o: ..\Drivers\ApplicationLayer\IBsp\IBsp.h
+autonomproject_1\main.o: ..\Drivers\ApplicationLayer\LedManager\ILedManager.h
 autonomproject_1\main.o: ..\Drivers\ApplicationLayer\LedManager\LedManager.h
 autonomproject_1\main.o: ..\Drivers\BspLayer\BspLayer.h
 autonomproject_1\main.o: ..\Drivers\RtosLayer\RtosLayer.h

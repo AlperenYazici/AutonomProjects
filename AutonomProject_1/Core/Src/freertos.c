@@ -53,14 +53,14 @@ osThreadId_t taskLedHandle;
 const osThreadAttr_t taskLed_attributes = {
   .name = "taskLed",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 128 * 4
+  .stack_size = 128 * 1
 };
 /* Definitions for taskUartEcho */
 osThreadId_t taskUartEchoHandle;
 const osThreadAttr_t taskUartEcho_attributes = {
   .name = "taskUartEcho",
   .priority = (osPriority_t) osPriorityLow,
-  .stack_size = 128 * 4
+  .stack_size = 128 * 1
 };
 /* Definitions for eventUartCom */
 osEventFlagsId_t eventUartComHandle;
@@ -124,6 +124,8 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_EVENTS */
 
 }
+
+
 
 
 

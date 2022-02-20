@@ -42,17 +42,19 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+	uint8_t uart_msg[2];
+//LedManager* Led_Manager;
+//UartCom* Uart_Com;
+BspLayer Bsp_Stm;
+RtosLayer Rtos_FreeRtos;
+LedManager Led_Manager(&Bsp_Stm , &Rtos_FreeRtos);
+UartCom Uart_Com(&Bsp_Stm , &Rtos_FreeRtos,uart_msg,&Led_Manager);
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t uart_msg[2];
-BspLayer *Bsp_Stm;
-RtosLayer *Rtos_FreeRtos;
-LedManager Led_Manager(Bsp_Stm , Rtos_FreeRtos);
-UartCom Uart_Com(Bsp_Stm , Rtos_FreeRtos,uart_msg);
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -76,7 +78,7 @@ void LedTask(void *argument)
   }
   /* USER CODE END LedTask */
 }
-
+extern osEventFlagsId_t eventUartComHandle;
 /* USER CODE BEGIN Header_UartEchoTask */
 /**
 * @brief Function implementing the taskUartEcho thread.
@@ -90,7 +92,9 @@ void UartEchoTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
+		osEventFlagsWait(eventUartComHandle,1,osFlagsWaitAll,portMAX_DELAY);	
     Uart_Com.Uart_Com_Echo();
+		osDelay(1);
   }
   /* USER CODE END UartEchoTask */
 }
@@ -98,7 +102,13 @@ void UartEchoTask(void *argument)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	Uart_Com.Uart_Com_ISR_Process();
+	
+		HAL_UART_Receive_IT(&huart2,uart_msg,1);
 
+}
 
 /* USER CODE END 0 */
 
@@ -110,6 +120,11 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+
+//LedManager Led_Manager2(&Bsp_Stm , &Rtos_FreeRtos);
+//UartCom Uart_Com2(&Bsp_Stm , &Rtos_FreeRtos,uart_msg);
+//	Led_Manager = &Led_Manager2;
+//	Uart_Com = &Uart_Com2;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -131,6 +146,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+	HAL_UART_Receive_IT(&huart2,uart_msg,1);
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */

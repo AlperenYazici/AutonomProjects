@@ -1,6 +1,6 @@
 #include "LedManager.h"
 
-LedManager::LedManager(IBsp* IBoardSP ,IRtos* IRealTimeOS )
+LedManager::LedManager(IBsp* IBoardSP ,IRtos* IRealTimeOS  )
 {
 	this->IBoardSP = IBoardSP;
 	this->IRealTimeOS = IRealTimeOS;

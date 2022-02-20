@@ -6,23 +6,18 @@ extern "C" {
 }
 #include "IRtos.h"
 #include "IBsp.h"
+#include "ILedManager.h"
 
-typedef struct OnOffTimes
-{
-	uint32_t On_Time;
-	uint32_t Off_Time;
 
-}OnOffTimes;
-
-class LedManager
+class LedManager : public ILedManager
 {		
 	IBsp* IBoardSP;
 	IRtos* IRealTimeOS;
 	
-	OnOffTimes GreenLed;
+//	OnOffTimes GreenLed = {500 , 500};
 	
 	public:
-	LedManager( IBsp* IBoardSP ,IRtos* IRealTimeOS );
+	LedManager( IBsp* IBoardSP ,IRtos* IRealTimeOS);
 	
 	
 	void Task();
@@ -31,9 +26,9 @@ class LedManager
 
 	void LED_OFF_Process();
 	
-	void SetGreenLedOnTime(uint32_t time_ms);
+	virtual void SetGreenLedOnTime(uint32_t time_ms);
 
-	void SetGreenLedOffTime(uint32_t time_ms);
+	virtual void SetGreenLedOffTime(uint32_t time_ms);
 	
 
 	

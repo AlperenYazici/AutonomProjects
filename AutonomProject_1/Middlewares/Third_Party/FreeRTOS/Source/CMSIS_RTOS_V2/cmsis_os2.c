@@ -1095,7 +1095,7 @@ uint32_t osEventFlagsGet (osEventFlagsId_t ef_id) {
   return (rflags);
 }
 
-uint32_t osEventFlagsWait (osEventFlagsId_t ef_id, uint32_t flags, uint32_t options, uint32_t timeout) {
+ uint32_t osEventFlagsWait (osEventFlagsId_t ef_id, uint32_t flags, uint32_t options, uint32_t timeout) {
   EventGroupHandle_t hEventGroup = (EventGroupHandle_t)ef_id;
   BaseType_t wait_all;
   BaseType_t exit_clr;
