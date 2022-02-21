@@ -1,5 +1,5 @@
 
-
+#define NO_END_MSG_STOP_CNT_CHAR 20
 #define TIME_LED_MS_STOP_CMD  1000
 #define CMD_STOP							"stop"
 #define CMD_START							"start"

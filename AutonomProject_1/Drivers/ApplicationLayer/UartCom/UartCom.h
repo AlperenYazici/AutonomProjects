@@ -21,7 +21,7 @@ typedef enum Echo_State{
 }Echo_State;
 
 typedef struct uart_com_msg{
-	char uart_strng[16];
+	char uart_strng[30];
 	uint8_t len; 
 }uart_com_msg;
 
@@ -54,11 +54,12 @@ class UartCom
 	uart_com_cmd_type uart_app_cmd_type;
 	Echo_State is_running_echo = ECHO_ACTIVE;// = 0;
 	uint8_t uart_rx_isr_active = 1;
-	const uint8_t string_restart[15] = "RESTARTING...\n" ;
-	const uint8_t cnt_restart_string = 14;
 	
-	const uint8_t string_restarted[12] = "RESTARTED!\n" ;
-	const uint8_t cnt_restarted_string = 11;
+//	const uint8_t string_restart[15] = "RESTARTING...\n" ;
+//	const uint8_t cnt_restart_string = 14;
+//	
+//	const uint8_t string_restarted[12] = "RESTARTED!\n" ;
+//	const uint8_t cnt_restarted_string = 11;
 	
 	UartCom( IBsp* IBoardSP, IRtos* IRealTimeOS	, ILedManager* ILed_Manager);
 
@@ -67,6 +68,8 @@ class UartCom
 	void Uart_Com_ISR_Process();
 	
 	void Uart_Config_Task();
+	
+	uart_com_cmd_valid Uart_Msg_Receive_Complete_Handle();
 	
 	void UART_Com_Start_Cmd_Handle();
 
@@ -80,8 +83,6 @@ class UartCom
 	
 	void Uart_Com_Echo();
 	
-	void UartCom_Update_Configuration();
-
 	uart_com_cmd_valid UART_Com_Set_BaudRate_Cmd_Handle();
 
 	uart_com_cmd_valid UART_Com_Set_WordLen_Cmd_Handle();

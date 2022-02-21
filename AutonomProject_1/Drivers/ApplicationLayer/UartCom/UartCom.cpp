@@ -28,10 +28,7 @@ Error_Ctrl_Result IS_ALL_DIGIT_NMBR(char* string_val , uint8_t digit_cnt)
 	
 }
 
-void UartCom::UartCom_Update_Configuration()
-{
-	
-}
+
 
 UartCom::UartCom(IBsp* IBoardSP,  IRtos* IRealTimeOS	, ILedManager* ILed_Manager)
 {
@@ -54,13 +51,11 @@ void UartCom::Uart_Config_Task()
 	IBoardSP->Uart_Rx_ISR(uart_data_buff,1);
 	
 }
-void UartCom::Uart_Com_ISR_Process()
+
+
+uart_com_cmd_valid UartCom::Uart_Msg_Receive_Complete_Handle()
 {
-	static uint16_t index = 0;
-	uart_com_cmd_valid is_msg_valid = MSG_UNVALID;
-	if(uart_data_buff[0] == ASCII_ENTER_CHAR_VAL) // "/n" asci karakterini sorguluyor.
-	{
-		uart_app_msg.len = index;
+		uart_com_cmd_valid is_msg_valid = MSG_UNVALID;
 		is_msg_valid = uart_cmd_parse();
 		if(is_msg_valid == MSG_VALID)
 		{
@@ -85,24 +80,40 @@ void UartCom::Uart_Com_ISR_Process()
 		if(is_running_echo == ECHO_ACTIVE)
 				IRealTimeOS->UartComEventFlagSet();
 		
+		return is_msg_valid;
+}
+
+void UartCom::Uart_Com_ISR_Process()
+{
+	static uint16_t index = 0;
+	uart_com_cmd_valid is_msg_valid = MSG_UNVALID;
+	if(uart_data_buff[0] == ASCII_ENTER_CHAR_VAL) // "/n" asci karakterini sorguluyor.
+	{
+		uart_app_msg.len = index;
+		is_msg_valid = Uart_Msg_Receive_Complete_Handle();
 		index = 0;
 	}
 	else
 	{
 		uart_app_msg.uart_strng[index] =  uart_data_buff[0];
 		index++;
+		if(index >=	NO_END_MSG_STOP_CNT_CHAR)
+		{
+			index = 0;
+		}
 	}
+	
 	if(is_msg_valid == MSG_VALID && ((uart_app_cmd_type == SET_UART_STOP_BIT)|| (uart_app_cmd_type == SET_UART_WORDLENGHT) 
 		||(uart_app_cmd_type == SET_UART_BAUD) ))
 	{
-		//IRealTimeOS->UartConfigEventFlagSet();
-		uart_rx_isr_active = 0;
+		uart_rx_isr_active = 0; //CONFIG KOMUTU GELMISSE UART RECEIVE ISR'YI CAGIRMA 
 	}
 	else
 	{
-		IBoardSP->Uart_Rx_ISR(uart_data_buff,1);
+		IBoardSP->Uart_Rx_ISR(uart_data_buff,1); //CONFIG KOMUTU GELMEMISSE UART RECEIVE ISR'YI CAGIR 
 		uart_rx_isr_active = 1;
 	}
+	
 }
 
 void UartCom::UART_Com_Start_Cmd_Handle()
